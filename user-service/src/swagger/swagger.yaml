@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: User Service API
+  version: 1.0.0
+  description: API de gestion des utilisateurs.
+
+servers:
+  - url: http://localhost:3000
+    description: Serveur local de développement
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+paths:
+  /users/logout:
+      post:
+        summary: Déconnexion utilisateur
+        tags:
+          - Utilisateur
+        description: Supprime le token JWT côté client pour déconnecter l'utilisateur.
+        responses:
+          "200":
+            description: Utilisateur déconnecté avec succès
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Utilisateur déconnecté avec succès."
+  /users/register:
+    post:
+      summary: Inscription utilisateur
+      tags:
+        - Utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Doe"
+                email:
+                  type: string
+                  example: "john.doe@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: Utilisateur enregistré avec succès
+        "400":
+          description: Erreur de requête
+
+  /users/login:
+    post:
+      summary: Connexion utilisateur
+      tags:
+        - Utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "john.doe@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: Connexion réussie
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "votre_token_jwt"
+        "400":
+          description: Email ou mot de passe incorrect
+
+  /users/details:
+    get:
+      summary: Récupérer les détails de l'utilisateur
+      tags:
+        - Utilisateur
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Détails de l'utilisateur récupérés avec succès
+        "401":
+          description: Non autorisé
+
+  /users/progress:
+    put:
+      summary: Mise à jour des progressions
+      tags:
+        - Utilisateur
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                weight:
+                  type: number
+                  example: 70
+                height:
+                  type: number
+                  example: 175
+                bodyFatPercentage:
+                  type: number
+                  example: 15
+      responses:
+        "200":
+          description: Progressions mises à jour avec succès
+        "401":
+          description: Non autorisé
+
+  /users/subscription:
+    put:
+      summary: Mise à jour de l'abonnement
+      tags:
+        - Utilisateur
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscription:
+                  type: string
+                  enum: [free, premium]
+                  example: premium
+      responses:
+        "200":
+          description: Abonnement mis à jour avec succès
+        "401":
+          description: Non autorisé

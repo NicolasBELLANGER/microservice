@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: new_user
+      RABBITMQ_DEFAULT_PASS: new_password
+    ports:
+      - "5672:5672"    # Port AMQP
+      - "15672:15672"  # Interface web de RabbitMQ
+    networks:
+      - app-network
+
+  programme-service:
+    build:
+      context: ./programme_service
+    container_name: programme-service
+    depends_on:
+      - rabbitmq
+    environment:
+      - MONGODB_URI=mongodb+srv://coursJS:coursJS@cluster0.2b52b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - RABBITMQ_URL=amqp://new_user:new_password@rabbitmq:5672
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  user-service:
+    build:
+      context: ./user-service
+    container_name: user-service
+    depends_on:
+      - rabbitmq
+    environment:
+      - MONGO_URI=mongodb+srv://mattheo:naegellen@mybdd.puvvk.mongodb.net/?retryWrites=true&w=majority&appName=mybdd
+      - RABBITMQ_URL=amqp://new_user:new_password@rabbitmq:5672
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

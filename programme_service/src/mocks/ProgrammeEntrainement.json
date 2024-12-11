@@ -1,0 +1,17 @@
+{
+    "name": "Programme Full Body",
+    "description": "Programme visant à travailler tous les groupes musculaires.",
+    "createdBy": "user-001",
+    "exercises": [
+        {
+            "name": "Pompes",
+            "repetitions": 15,
+            "sets": 3
+        },
+        {
+            "name": "Squats",
+            "repetitions": 20,
+            "sets": 4
+        }
+    ]
+}
