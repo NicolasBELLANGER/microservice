@@ -14,8 +14,22 @@ const options = {
         description: 'Local development server',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
-  apis: ['./src/docs/**/*.js'],
+  apis: ['./src/docs/**/*.js'], // Adjust the path as needed for your docs
 };
 
 const swaggerSpec = swaggerJsdoc(options);
