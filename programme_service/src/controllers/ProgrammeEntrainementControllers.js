@@ -28,6 +28,23 @@ const getProgrammeEntrainementById = async (req, res) => {
     }
 };
 
+const getUserProgrammes = async (req, res) => {
+  try {
+      const userId = req.user._id;
+
+      const programmes = await ProgrammeEntrainement.findById( req.user._id );
+
+      if (programmes.length === 0) {
+          return res.status(404).json({ error: 'Aucun programme trouvé pour cet utilisateur' });
+      }
+
+      return res.status(200).json(programmes);
+  } catch (error) {
+      console.error('Error fetching user programmes:', error);
+      return res.status(500).json({ error: `Erreur serveur interne: ${error.message}` });
+  }
+};
+
 const createProgrammeEntrainement = async (req, res) => {
     try {
       const errors = verifyProgrammeEntrainement(req);
@@ -193,6 +210,7 @@ const generateWorkout = async (req, res) => {
 module.exports = {
     getAllProgrammeEntrainement,
     getProgrammeEntrainementById,
+    getUserProgrammes,
     createProgrammeEntrainement,
     updateProgrammeEntrainement,
     deleteProgrammeEntrainement,

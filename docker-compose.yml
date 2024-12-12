@@ -5,8 +5,8 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: new_user
-      RABBITMQ_DEFAULT_PASS: new_password
+      - RABBITMQ_DEFAULT_USER=new_user
+      - RABBITMQ_DEFAULT_PASS=new_password
     ports:
       - "5672:5672"    # Port AMQP
       - "15672:15672"  # Interface web de RabbitMQ
