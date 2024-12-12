@@ -5,6 +5,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const {
     getAllProgrammeEntrainement,
     getProgrammeEntrainementById,
+    getUserProgrammes,
     createProgrammeEntrainement,
     updateProgrammeEntrainement,
     deleteProgrammeEntrainement,
@@ -15,6 +16,8 @@ const {
 router.get('/', getAllProgrammeEntrainement);
 
 router.get('/:id', getProgrammeEntrainementById);
+
+router.get('/programmes/user', authMiddleware, getUserProgrammes);
 
 router.post('/', authMiddleware, createProgrammeEntrainement);
 
