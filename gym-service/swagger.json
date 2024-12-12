@@ -5,9 +5,14 @@
     "title": "Salle de sport",
     "description": "API pour la gestion des salles de sport"
   },
-  "host": "localhost:3000",
+  "host": "localhost:3030",
   "basePath": "/",
   "schemes": ["http"],
+  "servers": [
+    {
+      "url": "http://localhost:3030"
+    }
+  ],
   "tags": [
     {
       "name": "Salles de sport",
@@ -60,9 +65,21 @@
                     "type": "string"
                   },
                   "description": "Liste des équipements de la salle"
+                },
+                "details": {
+                  "type": "string",
+                  "description": "Détails supplémentaires sur la salle de sport"
+                },
+                "openingHours": {
+                  "type": "string",
+                  "description": "Heures d'ouverture de la salle de sport"
+                },
+                "pricing": {
+                  "type": "string",
+                  "description": "Prix de l'abonnement ou des services"
                 }
               },
-              "required": ["name", "location", "facilities"]
+              "required": ["name", "location", "facilities", "details", "openingHours", "pricing"]
             }
           }
         ],

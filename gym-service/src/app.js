@@ -7,6 +7,7 @@ const swaggerDocument = require('../swagger.json');
 const gymRoutes = require('./routes/gymRoutes');
 const amqp = require('amqplib');
 const { promisify } = require('util');
+const cors = require('cors');
 
 // Fonction pour tester la connexion à RabbitMQ avec retry
 async function waitForRabbitMQ(url, retries = 10, delay = 3000) {
@@ -30,6 +31,8 @@ async function waitForRabbitMQ(url, retries = 10, delay = 3000) {
 // Initialiser l'application Express
 const app = express();
 app.use(bodyParser.json());
+
+app.use(cors());
 
 // Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

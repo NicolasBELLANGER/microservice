@@ -2,16 +2,13 @@ const Gym = require('../models/Gym');
 const User = require('../models/User');
 const { sendToQueue } = require('../services/rabbitmq');
 
-// Recherche des salles de sport
-exports.searchGyms = async (req, res) => {
-  const { query, limit = 10, page = 1 } = req.query;
+// Récupérer toutes les salles de sport
+exports.getGyms = async (req, res) => {
   try {
-    const gyms = await Gym.find({ name: new RegExp(query, 'i') })
-      .limit(Number(limit))
-      .skip((Number(page) - 1) * Number(limit));
+    const gyms = await Gym.find();
     res.status(200).json(gyms);
   } catch (error) {
-    res.status(500).json({ error: 'Error searching gyms' });
+    res.status(500).json({ error: 'Error fetching gyms' });
   }
 };
 
