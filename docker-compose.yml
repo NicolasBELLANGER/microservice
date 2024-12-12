@@ -41,6 +41,19 @@ services:
     networks:
       - app-network
 
+  gym-service:
+    build: ./gym-service
+    container_name: gym-service
+    environment:
+      - MONGO_URI=mongodb+srv://xexenura999:admin123@cluster0.ve4k7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - RABBITMQ_URL=amqp://new_user:new_password@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+    ports:
+      - "3030:3030"
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge

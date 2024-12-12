@@ -1,0 +1,159 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Salle de sport",
+    "description": "API pour la gestion des salles de sport"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "Salles de sport",
+      "description": "Routes pour la gestion des salles de sport"
+    },
+    {
+      "name": "Favoris",
+      "description": "Routes pour la gestion des favoris"
+    }
+  ],
+  "paths": {
+    "/api/gyms": {
+      "get": {
+        "tags": ["Salles de sport"],
+        "summary": "Obtenir toutes les salles de sport",
+        "description": "Retourne la liste de toutes les salles de sport disponibles.",
+        "responses": {
+          "200": {
+            "description": "Liste des salles de sport obtenue avec succès"
+          },
+          "500": {
+            "description": "Erreur interne du serveur"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Salles de sport"],
+        "summary": "Ajouter une nouvelle salle de sport",
+        "description": "Permet d'ajouter une nouvelle salle de sport à la base de données.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Détails de la nouvelle salle de sport à ajouter",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Nom de la salle de sport"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "Adresse de la salle de sport"
+                },
+                "facilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Liste des équipements de la salle"
+                }
+              },
+              "required": ["name", "location", "facilities"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Salle de sport ajoutée avec succès"
+          },
+          "400": {
+            "description": "Données invalides"
+          },
+          "500": {
+            "description": "Erreur interne du serveur"
+          }
+        }
+      }
+    },
+    "/api/gyms/{gymId}": {
+      "get": {
+        "tags": ["Salles de sport"],
+        "summary": "Obtenir les détails d'une salle de sport",
+        "description": "Retourne les informations d'une salle donnée par son ID.",
+        "parameters": [
+          {
+            "name": "gymId",
+            "in": "path",
+            "required": true,
+            "description": "ID de la salle de sport",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails de la salle de sport obtenus avec succès"
+          },
+          "404": {
+            "description": "Salle de sport non trouvée"
+          },
+          "500": {
+            "description": "Erreur interne du serveur"
+          }
+        }
+      }
+    },
+    "/api/gyms/favorites": {
+      "get": {
+        "tags": ["Favoris"],
+        "summary": "Obtenir les salles favorites",
+        "description": "Retourne la liste des salles marquées comme favorites.",
+        "responses": {
+          "200": {
+            "description": "Liste des salles favorites obtenue avec succès"
+          },
+          "500": {
+            "description": "Erreur interne du serveur"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Favoris"],
+        "summary": "Ajouter une salle aux favoris",
+        "description": "Ajoute une salle de sport à la liste des favoris.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Détails de la salle à ajouter aux favoris",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gymId": {
+                  "type": "string",
+                  "description": "ID de la salle de sport"
+                }
+              },
+              "required": ["gymId"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Salle ajoutée aux favoris avec succès"
+          },
+          "400": {
+            "description": "Salle déjà ajoutée aux favoris"
+          },
+          "500": {
+            "description": "Erreur interne du serveur"
+          }
+        }
+      }
+    }
+  }
+}
