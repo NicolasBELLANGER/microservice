@@ -32,7 +32,7 @@ const getUserProgrammes = async (req, res) => {
   try {
       const userId = req.user._id;
 
-      const programmes = await ProgrammeEntrainement.find({ createdBy: userId });
+      const programmes = await ProgrammeEntrainement.findById( req.user._id );
 
       if (programmes.length === 0) {
           return res.status(404).json({ error: 'Aucun programme trouvé pour cet utilisateur' });

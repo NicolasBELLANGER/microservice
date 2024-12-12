@@ -2,25 +2,40 @@
  * @swagger
  * /programmes:
  *   get:
- *     summary: Get all training programs
+ *     summary: Obtenir tous les programmes d'entraînement
  *     tags:
  *       - ProgrammeEntrainement
  *     responses:
  *       200:
- *         description: List of training programs
+ *         description: Liste des programmes d'entraînement
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/ProgrammeEntrainement'
+ *             example:
+ *               - id: "639d0b9c1e74a8123456789a"
+ *                 name: "Programme Musculation"
+ *                 description: "Un programme pour augmenter la masse musculaire."
+ *                 exercises: [
+ *                   { name: "Pompes", repetitions: 15, sets: 3 },
+ *                   { name: "Squats", repetitions: 20, sets: 3 }
+ *                 ]
+ *               - id: "639d0b9c1e74a8123456789b"
+ *                 name: "Programme Endurance"
+ *                 description: "Un programme pour améliorer la capacité cardiorespiratoire."
+ *                 exercises: [
+ *                   { name: "Course", repetitions: 600, sets: 1 },
+ *                   { name: "Corde à sauter", repetitions: 100, sets: 3 }
+ *                 ]
  */
 
 /**
  * @swagger
  * /programmes/{id}:
  *   get:
- *     summary: Get a training program by ID
+ *     summary: Obtenir un programme d'entraînement par ID
  *     tags:
  *       - ProgrammeEntrainement
  *     parameters:
@@ -29,23 +44,31 @@
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the training program
+ *         description: ID du programme d'entraînement
  *     responses:
  *       200:
- *         description: Training program details
+ *         description: Détails du programme d'entraînement
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ProgrammeEntrainement'
+ *             example:
+ *               id: "639d0b9c1e74a8123456789a"
+ *               name: "Programme Musculation"
+ *               description: "Un programme pour augmenter la masse musculaire."
+ *               exercises: [
+ *                 { name: "Pompes", repetitions: 15, sets: 3 },
+ *                 { name: "Squats", repetitions: 20, sets: 3 }
+ *               ]
  *       404:
- *         description: Training program not found
+ *         description: Programme non trouvé
  */
 
 /**
  * @swagger
  * /programmes:
  *   post:
- *     summary: Create a new training program
+ *     summary: Créer un nouveau programme d'entraînement
  *     tags:
  *       - ProgrammeEntrainement
  *     requestBody:
@@ -54,18 +77,25 @@
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ProgrammeEntrainement'
+ *           example:
+ *             name: "Programme Yoga"
+ *             description: "Un programme pour améliorer la souplesse et la relaxation."
+ *             exercises: [
+ *               { name: "Posture du chien", repetitions: 10, sets: 3 },
+ *               { name: "Posture de l'arbre", repetitions: 10, sets: 2 }
+ *             ]
  *     responses:
  *       201:
- *         description: Training program created successfully
+ *         description: Programme d'entraînement créé avec succès
  *       400:
- *         description: Invalid input
+ *         description: Données d'entrée invalides
  */
 
 /**
  * @swagger
  * /programmes/{id}:
  *   put:
- *     summary: Update a training program by ID
+ *     summary: Mettre à jour un programme d'entraînement par ID
  *     tags:
  *       - ProgrammeEntrainement
  *     parameters:
@@ -74,27 +104,34 @@
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the training program
+ *         description: ID du programme d'entraînement
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ProgrammeEntrainement'
+ *           example:
+ *             name: "Programme Cardio"
+ *             description: "Un programme pour améliorer l'endurance."
+ *             exercises: [
+ *               { name: "Course rapide", repetitions: 500, sets: 3 },
+ *               { name: "Montées de genoux", repetitions: 20, sets: 4 }
+ *             ]
  *     responses:
  *       200:
- *         description: Training program updated successfully
+ *         description: Programme d'entraînement mis à jour avec succès
  *       400:
- *         description: Invalid input
+ *         description: Données d'entrée invalides
  *       404:
- *         description: Training program not found
+ *         description: Programme non trouvé
  */
 
 /**
  * @swagger
  * /programmes/{id}:
  *   delete:
- *     summary: Delete a training program by ID
+ *     summary: Supprimer un programme d'entraînement par ID
  *     tags:
  *       - ProgrammeEntrainement
  *     parameters:
@@ -103,19 +140,19 @@
  *         schema:
  *           type: string
  *         required: true
- *         description: ID of the training program
+ *         description: ID du programme d'entraînement
  *     responses:
  *       200:
- *         description: Training program deleted successfully
+ *         description: Programme supprimé avec succès
  *       404:
- *         description: Training program not found
+ *         description: Programme non trouvé
  */
 
 /**
  * @swagger
  * /programmes/generate:
  *   post:
- *     summary: Generate a workout plan
+ *     summary: Générer un plan d'entraînement
  *     tags:
  *       - ProgrammeEntrainement
  *     requestBody:
@@ -127,24 +164,27 @@
  *             properties:
  *               goal:
  *                 type: string
- *                 description: The goal of the workout (e.g., Perte de poids, Musculation, Endurance)
+ *                 description: Objectif de l'entraînement (ex : Perte de poids, Musculation, Endurance)
  *               createdBy:
  *                 type: string
- *                 description: The user who created the workout plan
+ *                 description: Utilisateur ayant créé le plan
+ *           example:
+ *             goal: "Musculation"
+ *             createdBy: "user123"
  *     responses:
  *       201:
- *         description: Workout plan generated successfully
+ *         description: Plan d'entraînement généré avec succès
  *       400:
- *         description: Invalid input
+ *         description: Objectif invalide
  *       500:
- *         description: Internal server error
+ *         description: Erreur interne du serveur
  */
 
 /**
  * @swagger
  * /programmes/complete:
  *   put:
- *     summary: Mark an exercise as completed
+ *     summary: Marquer un exercice comme complété
  *     tags:
  *       - ProgrammeEntrainement
  *     requestBody:
@@ -156,39 +196,50 @@
  *             properties:
  *               programmeId:
  *                 type: string
- *                 description: The ID of the training program
+ *                 description: ID du programme d'entraînement
  *               exerciseName:
  *                 type: string
- *                 description: The name of the exercise to mark as completed
+ *                 description: Nom de l'exercice à marquer comme complété
+ *           example:
+ *             programmeId: "639d0b9c1e74a8123456789a"
+ *             exerciseName: "Pompes"
  *     responses:
  *       200:
- *         description: Exercise marked as completed
+ *         description: Exercice marqué comme complété
  *       404:
- *         description: Programme or exercise not found
+ *         description: Programme ou exercice non trouvé
  *       500:
- *         description: Internal server error
+ *         description: Erreur interne du serveur
  */
 
 /**
  * @swagger
  * /programmes/user:
  *   get:
- *     summary: Get all training programs for the authenticated user
+ *     summary: Obtenir tous les programmes d'entraînement pour l'utilisateur authentifié
  *     tags:
  *       - ProgrammeEntrainement
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of training programs for the authenticated user
+ *         description: Liste des programmes pour l'utilisateur authentifié
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/ProgrammeEntrainement'
+ *             example:
+ *               - id: "639d0b9c1e74a8123456789a"
+ *                 name: "Programme Musculation"
+ *                 description: "Un programme pour augmenter la masse musculaire."
+ *                 exercises: [
+ *                   { name: "Pompes", repetitions: 15, sets: 3 },
+ *                   { name: "Squats", repetitions: 20, sets: 3 }
+ *                 ]
  *       401:
- *         description: Unauthorized access, token missing or invalid
+ *         description: Accès non autorisé, jeton manquant ou invalide
  *         content:
  *           application/json:
  *             schema:
@@ -196,9 +247,9 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   example: "Unauthorized access"
+ *                   example: "Accès non autorisé"
  *       404:
- *         description: No programs found for the authenticated user
+ *         description: Aucun programme trouvé pour cet utilisateur
  *         content:
  *           application/json:
  *             schema:
@@ -206,9 +257,9 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   example: "No programs found for this user"
+ *                   example: "Aucun programme trouvé pour cet utilisateur"
  *       500:
- *         description: Internal server error
+ *         description: Erreur interne du serveur
  *         content:
  *           application/json:
  *             schema:
@@ -216,5 +267,5 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   example: "Internal server error"
+ *                   example: "Erreur interne du serveur"
  */
