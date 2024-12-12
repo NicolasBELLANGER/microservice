@@ -51,6 +51,18 @@ services:
       - rabbitmq
     ports:
       - "3030:3030"
+      
+  nutrition-service:
+    build:
+      context: ./nutrition-service
+    container_name: nutrition-service
+    depends_on:
+      - rabbitmq
+    environment:
+      - MONGO_URI=mongodb+srv://thnghia84:TTZXvZNLgrNFpjEJ@nutrition-cluster.kh9l1.mongodb.net/?retryWrites=true&w=majority&appName=nutrition-cluster
+      - RABBITMQ_URL=amqp://new_user:new_password@rabbitmq:5672
+    ports:
+      - "4000:4000"
     networks:
       - app-network
 
