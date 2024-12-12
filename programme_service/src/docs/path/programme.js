@@ -140,7 +140,6 @@
  *         description: Internal server error
  */
 
-
 /**
  * @swagger
  * /programmes/complete:
@@ -168,4 +167,54 @@
  *         description: Programme or exercise not found
  *       500:
  *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /programmes/user:
+ *   get:
+ *     summary: Get all training programs for the authenticated user
+ *     tags:
+ *       - ProgrammeEntrainement
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of training programs for the authenticated user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ProgrammeEntrainement'
+ *       401:
+ *         description: Unauthorized access, token missing or invalid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized access"
+ *       404:
+ *         description: No programs found for the authenticated user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No programs found for this user"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Internal server error"
  */
