@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: Nutrition API
+  description: API pour la gestion des plans nutritionnels.
+  version: 3.0.0
+servers:
+  - url: 'http://localhost:4000'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /api/nutrition/generate:
+    post:
+      summary: Générer un plan nutritionnel
+      description: Crée un plan nutritionnel pour un utilisateur en fournissant l'ID de l'utilisateur, l'objectif et les préférences.
+      tags:
+        - Nutrition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: ID de l'utilisateur
+                  example: 60c72b2f9b1e8d5a2d3f5d63
+                goal:
+                  type: string
+                  description: Objectif du plan nutritionnel
+                  example: "Perdre du poids"
+                preferences:
+                  type: array
+                  items:
+                    type: string
+                  description: Liste des préférences alimentaires de l'utilisateur
+                  example: ["végétarien", "sans gluten"]
+      responses:
+        '201':
+          description: Plan nutritionnel créé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan nutritionnel généré avec succès.
+                  plan:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                        example: 60c72b2f9b1e8d5a2d3f5d63
+                      goal:
+                        type: string
+                        example: "Perdre du poids"
+        '400':
+          description: Erreur de validation
+
+  /api/nutrition/log/{planId}:
+    post:
+      summary: Enregistrer un repas consommé dans un plan nutritionnel
+      description: Enregistre un repas dans le plan nutritionnel spécifié par son ID.
+      tags:
+        - Nutrition
+      parameters:
+        - in: path
+          name: planId
+          required: true
+          schema:
+            type: string
+          description: L'ID du plan nutritionnel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mealDetails:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Le nom du repas
+                    calories:
+                      type: number
+                      description: Nombre de calories du repas
+                    protein:
+                      type: number
+                      description: Quantité de protéines du repas
+                    carbs:
+                      type: number
+                      description: Quantité de glucides du repas
+                    fats:
+                      type: number
+                      description: Quantité de graisses du repas
+                    time:
+                      type: string
+                      format: date-time
+                      description: Heure du repas
+      responses:
+        '200':
+          description: Repas enregistré avec succès
+        '404':
+          description: Plan non trouvé
+
+  /api/nutrition/history/{userId}:
+    get:
+      summary: Récupérer l'historique des plans nutritionnels
+      description: Récupère tous les plans nutritionnels associés à un utilisateur spécifié par son ID.
+      tags:
+        - Nutrition
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: L'ID de l'utilisateur
+      responses:
+        '200':
+          description: Historique des plans récupéré avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      example: 60c72b2f9b1e8d5a2d3f5d63
+                    goal:
+                      type: string
+                      example: "Perdre du poids"
+        '404':
+          description: Aucun plan trouvé pour cet utilisateur
+
+  /api/nutrition/feedback/{planId}:
+    post:
+      summary: Donner un feedback sur un plan nutritionnel
+      description: Permet à un utilisateur de donner un feedback sur un plan nutritionnel existant.
+      tags:
+        - Nutrition
+      parameters:
+        - in: path
+          name: planId
+          required: true
+          schema:
+            type: string
+          description: L'ID du plan nutritionnel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feedback:
+                  type: string
+                  description: Le feedback sur le plan
+                  example: "Le plan est utile, mais manque d'options végétaliennes."
+      responses:
+        '200':
+          description: Feedback enregistré avec succès
+        '404':
+          description: Plan non trouvé
+
+  /api/nutrition/comment/{planId}:
+    put:
+      summary: Modifier un commentaire sur un plan nutritionnel
+      description: Permet à un utilisateur de mettre à jour le commentaire (feedback) d'un plan nutritionnel existant.
+      tags:
+        - Nutrition
+      parameters:
+        - in: path
+          name: planId
+          required: true
+          schema:
+            type: string
+          description: L'ID du plan nutritionnel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                feedback:
+                  type: string
+                  description: Le nouveau commentaire (feedback)
+                  example: "Le plan est excellent, mais il pourrait inclure des options sans sucre."
+      responses:
+        '200':
+          description: Commentaire mis à jour avec succès
+        '404':
+          description: Plan non trouvé
+
+  /api/nutrition/delete/{planId}:
+    delete:
+      summary: Supprimer un plan nutritionnel
+      description: Supprime un plan nutritionnel uniquement si l'utilisateur authentifié est le créateur du plan.
+      tags:
+        - Nutrition
+      parameters:
+        - in: path
+          name: planId
+          required: true
+          schema:
+            type: string
+          description: L'ID du plan nutritionnel
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Plan supprimé avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Plan supprimé avec succès.
+        '403':
+          description: L'utilisateur n'est pas autorisé à supprimer ce plan.
+        '404':
+          description: Plan non trouvé
+        '500':
+          description: Erreur lors de la suppression du plan
