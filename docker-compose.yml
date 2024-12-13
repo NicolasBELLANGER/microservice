@@ -51,7 +51,9 @@ services:
       - rabbitmq
     ports:
       - "3030:3030"
-      
+    networks:
+      - app-network
+
   nutrition-service:
     build:
       context: ./nutrition-service
